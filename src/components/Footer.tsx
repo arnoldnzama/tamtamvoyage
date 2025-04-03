@@ -2,6 +2,7 @@
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -14,9 +15,9 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/public/lovable-uploads/47d0f654-c151-416d-a0b8-052c1a78c9f2.png" 
+              src="/public/lovable-uploads/af8a1637-7516-4d93-b2bf-40092ec1e07e.png" 
               alt="TamtamVoyage" 
-              className="h-14 mb-4"
+              className="h-14 mb-4 max-w-full"
             />
             <p className="text-experience-light/70 mb-6">
               Location de véhicules de qualité pour tous vos besoins de déplacement. Découvrez notre flotte moderne et diversifiée.
@@ -39,29 +40,19 @@ const Footer = () => {
             <h3 className="text-white text-lg font-medium mb-6">Liens rapides</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-experience-light/70 hover:text-experience-primary transition-colors">
+                <Link to="/" className="text-experience-light/70 hover:text-experience-primary transition-colors">
                   Accueil
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-experience-light/70 hover:text-experience-primary transition-colors">
-                  Nos véhicules
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-experience-light/70 hover:text-experience-primary transition-colors">
-                  Réservation
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-experience-light/70 hover:text-experience-primary transition-colors">
+                <Link to="/about" className="text-experience-light/70 hover:text-experience-primary transition-colors">
                   À propos de nous
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-experience-light/70 hover:text-experience-primary transition-colors">
-                  Contact
-                </a>
+                <Link to="/reservation" className="text-experience-light/70 hover:text-experience-primary transition-colors">
+                  Réservation
+                </Link>
               </li>
             </ul>
           </div>

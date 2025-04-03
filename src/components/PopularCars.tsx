@@ -9,7 +9,6 @@ const cars = [
   {
     id: 1,
     name: 'Citroën C3',
-    category: 'Économique',
     image: '/public/lovable-uploads/b033696d-4eb2-4eb3-b601-2306188f23e3.png',
     price: 29,
     rating: 4.8,
@@ -21,7 +20,6 @@ const cars = [
   {
     id: 2,
     name: 'Mercedes V-Class',
-    category: 'Van',
     image: '/public/lovable-uploads/56cbfb0e-d9c4-4825-b262-98f78d8c49bc.png',
     price: 89,
     rating: 4.9,
@@ -33,7 +31,6 @@ const cars = [
   {
     id: 3,
     name: 'Opel Insignia',
-    category: 'Berline',
     image: '/public/lovable-uploads/24777eab-759d-4fa6-b797-327e1a8751f5.png',
     price: 49,
     rating: 4.7,
@@ -45,7 +42,6 @@ const cars = [
   {
     id: 4,
     name: 'Peugeot 3008',
-    category: 'SUV',
     image: '/public/lovable-uploads/1c1d840c-cd92-4a29-887c-73bd43b8b6e5.png',
     price: 59,
     rating: 4.9,
@@ -57,7 +53,6 @@ const cars = [
   {
     id: 5,
     name: 'Renault Clio',
-    category: 'Économique',
     image: '/public/lovable-uploads/760b7a91-7066-4718-97db-46e3d93ce3b4.png',
     price: 25,
     rating: 4.6,
@@ -88,15 +83,12 @@ const PopularCars = () => {
             <div key={car.id} className="glass-card rounded-xl overflow-hidden transition-transform hover:scale-105 duration-300">
               <div className="relative h-52 bg-white">
                 <img src={car.image} alt={car.name} className="w-full h-full object-contain" />
-                <div className="absolute top-3 left-3 bg-[#FF5A5F] text-[#f5f5f5] px-3 py-1 rounded-full text-sm font-medium font-inter">
-                  {car.category}
-                </div>
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-xl font-medium font-playfair">{car.name}</h3>
                   <div className="flex items-center">
-                    <Star className="h-4 w-4 fill-[#FF5A5F] text-[#FF5A5F] mr-1" />
+                    <Star className="h-4 w-4 fill-experience-secondary text-experience-secondary mr-1" />
                     <span className="font-inter">{car.rating}</span>
                   </div>
                 </div>
@@ -126,7 +118,7 @@ const PopularCars = () => {
                     <span className="text-[#f5f5f5]/60 text-sm font-inter"> {t('par jour')}</span>
                   </div>
                   <Link to="/reservation">
-                    <Button className="bg-[#FF5A5F] hover:bg-[#FF5A5F]/90 text-[#f5f5f5] font-inter">
+                    <Button className="bg-experience-primary hover:bg-experience-primary/90 text-[#f5f5f5] font-inter">
                       {t('Réserver')}
                     </Button>
                   </Link>
@@ -138,7 +130,7 @@ const PopularCars = () => {
 
         <div className="text-center mt-12">
           <Link to="/reservation">
-            <Button variant="outline" className="border-[#f5f5f5] text-[#f5f5f5] hover:bg-[#f5f5f5]/10 transition-transform hover:scale-105 duration-300 font-inter">
+            <Button variant="outline" className="border-experience-primary text-experience-primary hover:bg-experience-primary hover:text-white transition-transform hover:scale-105 duration-300 font-inter">
               {t('Voir tous les véhicules')}
             </Button>
           </Link>

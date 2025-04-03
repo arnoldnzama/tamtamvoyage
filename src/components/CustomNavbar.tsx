@@ -25,9 +25,9 @@ const CustomNavbar = () => {
           <div className="flex items-center">
             <Link to="/">
               <img 
-                src="/public/lovable-uploads/47d0f654-c151-416d-a0b8-052c1a78c9f2.png" 
+                src="/public/lovable-uploads/af8a1637-7516-4d93-b2bf-40092ec1e07e.png" 
                 alt="TamtamVoyage" 
-                className="h-14"
+                className="h-14 md:h-16"
               />
             </Link>
           </div>
@@ -35,9 +35,7 @@ const CustomNavbar = () => {
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-white hover:text-experience-primary transition-colors">{t('Accueil')}</Link>
-            <a href="#" className="text-white hover:text-experience-primary transition-colors">{t('Véhicules')}</a>
-            <a href="#" className="text-white hover:text-experience-primary transition-colors">{t('À propos')}</a>
-            <a href="#" className="text-white hover:text-experience-primary transition-colors">{t('Contact')}</a>
+            <Link to="/about" className="text-white hover:text-experience-primary transition-colors">{t('À propos')}</Link>
           </div>
 
           {/* Language and Mobile Menu Controls */}
@@ -70,9 +68,7 @@ const CustomNavbar = () => {
           <div className="md:hidden pt-4 pb-2">
             <div className="flex flex-col space-y-4">
               <Link to="/" className="text-white hover:text-experience-primary transition-colors">{t('Accueil')}</Link>
-              <a href="#" className="text-white hover:text-experience-primary transition-colors">{t('Véhicules')}</a>
-              <a href="#" className="text-white hover:text-experience-primary transition-colors">{t('À propos')}</a>
-              <a href="#" className="text-white hover:text-experience-primary transition-colors">{t('Contact')}</a>
+              <Link to="/about" className="text-white hover:text-experience-primary transition-colors">{t('À propos')}</Link>
               <Link to="/reservation">
                 <Button 
                   variant="outline" 

@@ -64,8 +64,8 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				experience: {
-					primary: '#FF5A5F',
-					secondary: '#00C1B2',
+					primary: '#00C1B2',
+					secondary: '#FF5A5F',
 					dark: '#121212',
 					light: '#F5F5F5',
 				}
