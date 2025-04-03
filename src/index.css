@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -97,5 +98,21 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-black/20 backdrop-blur-sm border border-white/10 text-white;
+  }
+  
+  .gradient-header {
+    background: linear-gradient(to right, #1A1F2C, #2d3142);
+  }
+  
+  .hero-gradient {
+    background: linear-gradient(rgba(26, 31, 44, 0.8), rgba(26, 31, 44, 0.95)), url('/public/lovable-uploads/649c55c0-eaaf-4f22-a82c-b5e958ee916e.png');
+    background-size: cover;
+    background-position: center;
   }
 }
