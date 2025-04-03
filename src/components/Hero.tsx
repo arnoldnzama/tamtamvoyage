@@ -3,6 +3,7 @@ import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Calendar, Car, Search } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -21,9 +22,11 @@ const Hero = () => {
             <Button className="bg-experience-primary hover:bg-experience-primary/90 text-white px-6 py-3 rounded-md">
               {t('home.hero.explore')}
             </Button>
-            <Button variant="outline" className="border-white text-white hover:bg-white/10 px-6 py-3 rounded-md">
-              {t('home.hero.book')}
-            </Button>
+            <Link to="/reservation">
+              <Button variant="outline" className="border-white text-white hover:bg-white/10 px-6 py-3 rounded-md">
+                {t('home.hero.book')}
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
@@ -63,10 +66,12 @@ const Hero = () => {
             </div>
             
             <div className="md:col-span-3">
-              <Button className="w-full bg-experience-primary hover:bg-experience-primary/90 text-black font-medium rounded-md p-3">
-                <Search className="mr-2 h-4 w-4" />
-                Rechercher un véhicule
-              </Button>
+              <Link to="/reservation">
+                <Button className="w-full bg-experience-primary hover:bg-experience-primary/90 text-black font-medium rounded-md p-3">
+                  <Search className="mr-2 h-4 w-4" />
+                  Rechercher un véhicule
+                </Button>
+              </Link>
             </div>
           </form>
         </div>
