@@ -36,6 +36,7 @@ const CustomNavbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className="text-white hover:text-experience-primary transition-colors">{t('Accueil')}</Link>
             <Link to="/about" className="text-white hover:text-experience-primary transition-colors">{t('À propos')}</Link>
+            <Link to="/blog" className="text-white hover:text-experience-primary transition-colors">{t('Blog')}</Link>
           </div>
 
           {/* Language and Mobile Menu Controls */}
@@ -69,6 +70,7 @@ const CustomNavbar = () => {
             <div className="flex flex-col space-y-4">
               <Link to="/" className="text-white hover:text-experience-primary transition-colors">{t('Accueil')}</Link>
               <Link to="/about" className="text-white hover:text-experience-primary transition-colors">{t('À propos')}</Link>
+              <Link to="/blog" className="text-white hover:text-experience-primary transition-colors">{t('Blog')}</Link>
               <Link to="/reservation">
                 <Button 
                   variant="outline" 
