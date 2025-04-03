@@ -12,18 +12,18 @@ const Hero = () => {
     <section className="hero-gradient pt-28 pb-20 md:pt-40 md:pb-32 relative">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 text-white">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-6 text-white">
             {t('home.hero.title')}
           </h1>
-          <p className="text-xl text-experience-light/80 mb-8">
+          <p className="text-xl text-[#f5f5f5]/80 font-inter mb-8">
             {t('home.hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center">
-            <Button className="bg-experience-primary hover:bg-experience-primary/90 text-white px-6 py-3 rounded-md">
+            <Button className="bg-[#FF5A5F] hover:bg-[#FF5A5F]/90 text-white px-6 py-3 rounded-md font-inter">
               {t('home.hero.explore')}
             </Button>
             <Link to="/reservation">
-              <Button variant="outline" className="border-white text-white hover:bg-white/10 px-6 py-3 rounded-md">
+              <Button variant="outline" className="border-white text-white hover:bg-white/10 px-6 py-3 rounded-md font-inter">
                 {t('home.hero.book')}
               </Button>
             </Link>
@@ -36,40 +36,36 @@ const Hero = () => {
         <div className="glass-card rounded-xl p-6 max-w-4xl mx-auto mt-12">
           <form className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
-              <label className="block text-experience-light/80 text-sm font-medium">
+              <label className="block text-[#f5f5f5]/80 text-sm font-medium font-inter">
                 <Car className="inline-block mr-2 h-4 w-4" />
-                Type de véhicule
+                {t('Type de véhicule')}
               </label>
-              <select className="w-full bg-black/30 border border-white/20 rounded-md p-3 text-white">
+              <select className="w-full bg-black/30 border border-white/20 rounded-md p-3 text-white font-inter">
                 <option>Toutes catégories</option>
-                <option>Économique</option>
-                <option>Berline</option>
-                <option>SUV</option>
-                <option>Premium</option>
               </select>
             </div>
             
             <div className="space-y-2">
-              <label className="block text-experience-light/80 text-sm font-medium">
+              <label className="block text-[#f5f5f5]/80 text-sm font-medium font-inter">
                 <Calendar className="inline-block mr-2 h-4 w-4" />
-                Date de début
+                {t('Date de début')}
               </label>
-              <input type="date" className="w-full bg-black/30 border border-white/20 rounded-md p-3 text-white" />
+              <input type="date" className="w-full bg-black/30 border border-white/20 rounded-md p-3 text-white font-inter" />
             </div>
             
             <div className="space-y-2">
-              <label className="block text-experience-light/80 text-sm font-medium">
+              <label className="block text-[#f5f5f5]/80 text-sm font-medium font-inter">
                 <Calendar className="inline-block mr-2 h-4 w-4" />
-                Date de fin
+                {t('Date de fin')}
               </label>
-              <input type="date" className="w-full bg-black/30 border border-white/20 rounded-md p-3 text-white" />
+              <input type="date" className="w-full bg-black/30 border border-white/20 rounded-md p-3 text-white font-inter" />
             </div>
             
             <div className="md:col-span-3">
               <Link to="/reservation">
-                <Button className="w-full bg-experience-primary hover:bg-experience-primary/90 text-black font-medium rounded-md p-3">
+                <Button className="w-full bg-[#00C1B2] hover:bg-[#00C1B2]/90 text-black font-medium rounded-md p-3 font-inter transition-transform hover:scale-105 duration-300">
                   <Search className="mr-2 h-4 w-4" />
-                  Rechercher un véhicule
+                  {t('Rechercher un véhicule')}
                 </Button>
               </Link>
             </div>

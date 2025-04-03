@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -103,16 +105,36 @@
 
 @layer components {
   .glass-card {
-    @apply bg-black/20 backdrop-blur-sm border border-white/10 text-white;
+    @apply bg-black/20 backdrop-blur-sm border border-white/10 text-[#f5f5f5];
   }
   
   .gradient-header {
-    background: linear-gradient(to right, #1A1F2C, #2d3142);
+    background: linear-gradient(to right, #121212, #2d3142);
   }
   
   .hero-gradient {
-    background: linear-gradient(rgba(26, 31, 44, 0.8), rgba(26, 31, 44, 0.95)), url('/public/lovable-uploads/649c55c0-eaaf-4f22-a82c-b5e958ee916e.png');
+    background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.95)), url('/public/lovable-uploads/01b73b26-5b23-41e8-bddf-193a2d39be5f.png');
     background-size: cover;
     background-position: center;
+  }
+
+  /* Transitions and animations */
+  .hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  .fade-in {
+    @apply animate-[fadeIn_500ms_ease-out_forwards];
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

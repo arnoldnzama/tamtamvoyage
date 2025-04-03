@@ -3,13 +3,14 @@ import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Star, Users, Fuel, GaugeCircle, Calendar } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const cars = [
   {
     id: 1,
     name: 'Citroën C3',
     category: 'Économique',
-    image: '/public/lovable-uploads/a4dc6bd3-2d64-4ca6-bb38-bbf3ece74a3f.png',
+    image: '/public/lovable-uploads/b033696d-4eb2-4eb3-b601-2306188f23e3.png',
     price: 29,
     rating: 4.8,
     seats: 5,
@@ -21,7 +22,7 @@ const cars = [
     id: 2,
     name: 'Mercedes V-Class',
     category: 'Van',
-    image: '/public/lovable-uploads/649c55c0-eaaf-4f22-a82c-b5e958ee916e.png',
+    image: '/public/lovable-uploads/56cbfb0e-d9c4-4825-b262-98f78d8c49bc.png',
     price: 89,
     rating: 4.9,
     seats: 8,
@@ -33,7 +34,7 @@ const cars = [
     id: 3,
     name: 'Opel Insignia',
     category: 'Berline',
-    image: '/public/lovable-uploads/2bd8ee9a-4304-41f6-bdff-45ba60db59fe.png',
+    image: '/public/lovable-uploads/24777eab-759d-4fa6-b797-327e1a8751f5.png',
     price: 49,
     rating: 4.7,
     seats: 5,
@@ -45,7 +46,7 @@ const cars = [
     id: 4,
     name: 'Peugeot 3008',
     category: 'SUV',
-    image: '/public/lovable-uploads/d4d23797-c3c0-4e9a-a861-5922edb56ae7.png',
+    image: '/public/lovable-uploads/1c1d840c-cd92-4a29-887c-73bd43b8b6e5.png',
     price: 59,
     rating: 4.9,
     seats: 5,
@@ -57,7 +58,7 @@ const cars = [
     id: 5,
     name: 'Renault Clio',
     category: 'Économique',
-    image: '/public/lovable-uploads/40a7e7a9-5752-461f-aa22-bc76864b6cf8.png',
+    image: '/public/lovable-uploads/760b7a91-7066-4718-97db-46e3d93ce3b4.png',
     price: 25,
     rating: 4.6,
     seats: 5,
@@ -71,62 +72,64 @@ const PopularCars = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-24 bg-experience-dark">
+    <section className="py-24 bg-[#121212]">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 text-white">
+          <h2 className="text-3xl md:text-4xl font-playfair font-bold mb-4 text-[#f5f5f5]">
             {t('Nos voitures populaires')}
           </h2>
-          <p className="text-experience-light/80">
+          <p className="text-[#f5f5f5]/80 font-inter">
             {t('Découvrez notre sélection de véhicules les plus demandés par nos clients.')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {cars.map(car => (
-            <div key={car.id} className="glass-card rounded-xl overflow-hidden">
+            <div key={car.id} className="glass-card rounded-xl overflow-hidden transition-transform hover:scale-105 duration-300">
               <div className="relative h-52 bg-white">
                 <img src={car.image} alt={car.name} className="w-full h-full object-contain" />
-                <div className="absolute top-3 left-3 bg-experience-primary text-black px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute top-3 left-3 bg-[#FF5A5F] text-[#f5f5f5] px-3 py-1 rounded-full text-sm font-medium font-inter">
                   {car.category}
                 </div>
               </div>
               <div className="p-6">
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-medium">{car.name}</h3>
+                  <h3 className="text-xl font-medium font-playfair">{car.name}</h3>
                   <div className="flex items-center">
-                    <Star className="h-4 w-4 fill-experience-primary text-experience-primary mr-1" />
-                    <span>{car.rating}</span>
+                    <Star className="h-4 w-4 fill-[#FF5A5F] text-[#FF5A5F] mr-1" />
+                    <span className="font-inter">{car.rating}</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                  <div className="flex items-center text-sm">
-                    <Users className="h-4 w-4 mr-2 text-experience-light/60" />
+                  <div className="flex items-center text-sm font-inter">
+                    <Users className="h-4 w-4 mr-2 text-[#f5f5f5]/60" />
                     <span>{car.seats} sièges</span>
                   </div>
-                  <div className="flex items-center text-sm">
-                    <GaugeCircle className="h-4 w-4 mr-2 text-experience-light/60" />
+                  <div className="flex items-center text-sm font-inter">
+                    <GaugeCircle className="h-4 w-4 mr-2 text-[#f5f5f5]/60" />
                     <span>{car.transmission}</span>
                   </div>
-                  <div className="flex items-center text-sm">
-                    <Fuel className="h-4 w-4 mr-2 text-experience-light/60" />
+                  <div className="flex items-center text-sm font-inter">
+                    <Fuel className="h-4 w-4 mr-2 text-[#f5f5f5]/60" />
                     <span>{car.fuel}</span>
                   </div>
-                  <div className="flex items-center text-sm">
-                    <Calendar className="h-4 w-4 mr-2 text-experience-light/60" />
+                  <div className="flex items-center text-sm font-inter">
+                    <Calendar className="h-4 w-4 mr-2 text-[#f5f5f5]/60" />
                     <span>{car.year}</span>
                   </div>
                 </div>
 
                 <div className="flex justify-between items-center">
                   <div>
-                    <span className="text-2xl font-bold">{car.price}€</span>
-                    <span className="text-experience-light/60 text-sm"> {t('par jour')}</span>
+                    <span className="text-2xl font-bold font-inter">{car.price}€</span>
+                    <span className="text-[#f5f5f5]/60 text-sm font-inter"> {t('par jour')}</span>
                   </div>
-                  <Button className="bg-experience-primary hover:bg-experience-primary/90 text-black">
-                    {t('Réserver')}
-                  </Button>
+                  <Link to="/reservation">
+                    <Button className="bg-[#FF5A5F] hover:bg-[#FF5A5F]/90 text-[#f5f5f5] font-inter">
+                      {t('Réserver')}
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -134,9 +137,11 @@ const PopularCars = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="outline" className="border-white text-white hover:bg-white/10">
-            {t('Voir tous les véhicules')}
-          </Button>
+          <Link to="/reservation">
+            <Button variant="outline" className="border-[#f5f5f5] text-[#f5f5f5] hover:bg-[#f5f5f5]/10 transition-transform hover:scale-105 duration-300 font-inter">
+              {t('Voir tous les véhicules')}
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
