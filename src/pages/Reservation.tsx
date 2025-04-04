@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -53,6 +55,7 @@ const Reservation = () => {
   const [price, setPrice] = useState<number>(0);
   const [basePrice, setBasePrice] = useState<number>(0);
   const [selectedCar, setSelectedCar] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   
   const form = useForm<ReservationFormData>({
     defaultValues: {
@@ -78,9 +81,84 @@ const Reservation = () => {
     }
   }, [participants, basePrice]);
 
-  const onSubmit = (data: ReservationFormData) => {
-    console.log("Form data:", data, "Total price:", price);
-    // Ici vous pourriez envoyer les données à une API
+  const onSubmit = async (data: ReservationFormData) => {
+    setIsSubmitting(true);
+    try {
+      const selectedCarObj = cars.find(c => c.id === data.selectedCar);
+      
+      // Préparer les données de réservation
+      const reservationData = {
+        full_name: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        country: data.country,
+        city: data.city,
+        pickup_location: data.pickupLocation,
+        start_date: data.startDate ? data.startDate.toISOString().split('T')[0] : null,
+        start_time: data.startTime,
+        end_date: data.endDate ? data.endDate.toISOString().split('T')[0] : null,
+        end_time: data.endTime,
+        car_id: data.selectedCar || null,
+        car_name: selectedCarObj?.name || null,
+        participants: data.participants,
+        driver_age: data.driverAge,
+        price: price,
+        user_id: (await supabase.auth.getUser()).data.user?.id || null,
+        status: "en_attente"
+      };
+      
+      // Insérer la réservation dans la base de données
+      const { data: reservation, error } = await supabase
+        .from('reservations')
+        .insert(reservationData)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error("Erreur lors de la soumission de la réservation:", error);
+        toast({
+          title: "Erreur",
+          description: "Une erreur est survenue lors de la soumission de votre réservation. Veuillez réessayer.",
+          variant: "destructive"
+        });
+        return;
+      }
+      
+      console.log("Réservation soumise avec succès:", reservation);
+      
+      // Envoyer la notification par email
+      await fetch(`https://fvxhbjypaybgmqsfyfbb.supabase.co/functions/v1/send-notification`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+        },
+        body: JSON.stringify({
+          type: 'new-reservation',
+          reservationId: reservation.id
+        })
+      });
+      
+      toast({
+        title: "Réservation effectuée",
+        description: "Votre demande de réservation a été soumise avec succès. Vous recevrez un email de confirmation prochainement.",
+      });
+      
+      // Réinitialiser le formulaire
+      form.reset();
+      setSelectedCar(null);
+      setBasePrice(0);
+      setPrice(0);
+    } catch (err) {
+      console.error("Erreur lors de la soumission:", err);
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de la soumission de votre réservation. Veuillez réessayer.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Options pour les listes déroulantes
@@ -629,9 +707,21 @@ const Reservation = () => {
                   <Button 
                     type="submit" 
                     className="w-full bg-[#FF5A5F] hover:bg-[#FF5A5F]/90 text-[#f5f5f5] font-bold py-3 text-lg transition-transform hover:scale-105 duration-300 font-inter"
-                    disabled={!selectedCar}
+                    disabled={!selectedCar || isSubmitting}
                   >
-                    {t('Rechercher des véhicules disponibles')}
+                    {isSubmitting ? (
+                      <span className="flex items-center justify-center">
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        {t('Traitement en cours...')}
+                      </span>
+                    ) : (
+                      <>
+                        {t('Réserver maintenant')}
+                      </>
+                    )}
                   </Button>
                 </form>
               </Form>

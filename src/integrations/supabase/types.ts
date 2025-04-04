@@ -9,16 +9,121 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      reservations: {
+        Row: {
+          admin_message: string | null
+          car_id: string | null
+          car_name: string | null
+          city: string | null
+          commande: string
+          country: string | null
+          created_at: string | null
+          driver_age: string | null
+          email: string
+          end_date: string
+          end_time: string | null
+          full_name: string
+          id: string
+          participants: number | null
+          phone: string | null
+          pickup_location: string | null
+          price: number | null
+          reference: string
+          start_date: string
+          start_time: string | null
+          status: Database["public"]["Enums"]["reservation_status"] | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          admin_message?: string | null
+          car_id?: string | null
+          car_name?: string | null
+          city?: string | null
+          commande?: string
+          country?: string | null
+          created_at?: string | null
+          driver_age?: string | null
+          email: string
+          end_date: string
+          end_time?: string | null
+          full_name: string
+          id?: string
+          participants?: number | null
+          phone?: string | null
+          pickup_location?: string | null
+          price?: number | null
+          reference?: string
+          start_date: string
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["reservation_status"] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          admin_message?: string | null
+          car_id?: string | null
+          car_name?: string | null
+          city?: string | null
+          commande?: string
+          country?: string | null
+          created_at?: string | null
+          driver_age?: string | null
+          email?: string
+          end_date?: string
+          end_time?: string | null
+          full_name?: string
+          id?: string
+          participants?: number | null
+          phone?: string | null
+          pickup_location?: string | null
+          price?: number | null
+          reference?: string
+          start_date?: string
+          start_time?: string | null
+          status?: Database["public"]["Enums"]["reservation_status"] | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _user_id: string
+          _role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      reservation_status: "en_attente" | "confirmee" | "refusee"
     }
     CompositeTypes: {
       [_ in never]: never

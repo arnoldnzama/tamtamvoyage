@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import About from "./pages/About";
 import Reservation from "./pages/Reservation";
 import Blog from "./pages/Blog";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import { Helmet } from "react-helmet";
 
@@ -29,6 +30,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/reservation" element={<Reservation />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/admin" element={<Admin />} />
+            <Route path="/admin/reservations/:id" element={<Admin />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
