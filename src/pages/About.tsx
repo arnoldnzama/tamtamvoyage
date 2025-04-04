@@ -15,7 +15,7 @@ const About = () => {
       <div 
         className="pt-32 pb-20 relative" 
         style={{
-          backgroundImage: "linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.8)), url('/placeholder.svg')",
+          backgroundImage: "linear-gradient(rgba(18, 18, 18, 0.7), rgba(18, 18, 18, 0.8)), url('/public/lovable-uploads/01b73b26-5b23-41e8-bddf-193a2d39be5f.png')",
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }}

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/context/LanguageContext';
-import { Facebook, Twitter, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Instagram, Mail, Phone, MapPin, Youtube } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -24,10 +24,13 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-experience-light/70 hover:text-experience-primary">
-                <Facebook size={20} />
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
+                  <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
+                </svg>
               </a>
               <a href="#" className="text-experience-light/70 hover:text-experience-primary">
-                <Twitter size={20} />
+                <Youtube size={20} color="#0dbb00" />
               </a>
               <a href="#" className="text-experience-light/70 hover:text-experience-primary">
                 <Instagram size={20} />

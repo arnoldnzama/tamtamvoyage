@@ -21,12 +21,7 @@ const Hero = () => {
           <p className="text-lg text-[#f5f5f5]/70 font-inter mb-8">
             Des aventures locales, des moments inoubliables et des rencontres authentiques. Explorez notre sélection d'activités soigneusement choisies pour vous faire découvrir votre région autrement.
           </p>
-          <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center">
-            <Link to="/reservation">
-              <Button className="bg-experience-primary hover:bg-experience-primary/90 text-white px-6 py-3 rounded-md font-inter">
-                Réserver maintenant
-              </Button>
-            </Link>
+          <div className="flex justify-center">
             <Link to="/reservation">
               <Button variant="outline" className="border-white text-white hover:bg-white/10 px-6 py-3 rounded-md font-inter">
                 {t('home.hero.book')}
