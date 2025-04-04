@@ -9,7 +9,7 @@ const cars = [
   {
     id: 1,
     name: 'Citroën C3',
-    image: '/public/lovable-uploads/eb25b91c-070d-4643-91d0-a3454461db37.png',
+    image: '/public/lovable-uploads/22f1fd0e-3ad0-40c3-908f-fa91e0712976.png',
     price: 29,
     rating: 4.8,
     seats: 5,
@@ -20,7 +20,7 @@ const cars = [
   {
     id: 2,
     name: 'Mercedes V-Class',
-    image: '/public/lovable-uploads/074ec851-1b61-4d75-817c-f7c392000189.png',
+    image: '/public/lovable-uploads/8be3dd81-bcba-404e-9a6c-34ca64715cab.png',
     price: 89,
     rating: 4.9,
     seats: 8,
@@ -31,7 +31,7 @@ const cars = [
   {
     id: 3,
     name: 'Opel Insignia',
-    image: '/public/lovable-uploads/deb5a7eb-0ee5-4335-be49-f123ad4ad536.png',
+    image: '/public/lovable-uploads/e7efcd03-826e-4dbc-9530-f52cbe0f84ac.png',
     price: 49,
     rating: 4.7,
     seats: 5,
@@ -42,7 +42,7 @@ const cars = [
   {
     id: 4,
     name: 'Peugeot 3008',
-    image: '/public/lovable-uploads/0f2c488c-cc17-4ee2-b3d5-8f924230f9a3.png',
+    image: '/public/lovable-uploads/5d3af73a-91b7-491d-9474-91c2224daaf1.png',
     price: 59,
     rating: 4.9,
     seats: 5,
@@ -53,7 +53,7 @@ const cars = [
   {
     id: 5,
     name: 'Renault Clio',
-    image: '/public/lovable-uploads/39b4cfae-75b6-4e30-a061-4b29380fdace.png',
+    image: '/public/lovable-uploads/8eb60652-e407-4203-9471-cce9e35904a1.png',
     price: 25,
     rating: 4.6,
     seats: 5,

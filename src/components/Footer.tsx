@@ -15,7 +15,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <img 
-              src="/public/lovable-uploads/af8a1637-7516-4d93-b2bf-40092ec1e07e.png" 
+              src="/public/lovable-uploads/ba0c5184-6267-4ef1-8142-7f6914d7e9fc.png" 
               alt="TamtamVoyage" 
               className="h-14 mb-4 max-w-full"
             />
@@ -52,6 +52,11 @@ const Footer = () => {
               <li>
                 <Link to="/reservation" className="text-experience-light/70 hover:text-experience-primary transition-colors">
                   Réservation
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="text-experience-light/70 hover:text-experience-primary transition-colors">
+                  Blog
                 </Link>
               </li>
             </ul>

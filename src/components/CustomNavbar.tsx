@@ -25,7 +25,7 @@ const CustomNavbar = () => {
           <div className="flex items-center">
             <Link to="/">
               <img 
-                src="/public/lovable-uploads/af8a1637-7516-4d93-b2bf-40092ec1e07e.png" 
+                src="/public/lovable-uploads/ba0c5184-6267-4ef1-8142-7f6914d7e9fc.png" 
                 alt="TamtamVoyage" 
                 className="h-14 md:h-16"
               />

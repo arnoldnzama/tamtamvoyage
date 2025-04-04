@@ -129,7 +129,8 @@ const Blog = () => {
       
       <Footer />
       
-      <style jsx>{`
+      <style>
+        {`
         @keyframes pulse-border {
           0% {
             box-shadow: 0 0 0 0 rgba(13, 187, 0, 0.4);
@@ -150,7 +151,8 @@ const Blog = () => {
           animation: none;
           box-shadow: 0 0 15px rgba(13, 187, 0, 0.6);
         }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
