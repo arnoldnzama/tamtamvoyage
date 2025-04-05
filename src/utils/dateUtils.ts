@@ -26,3 +26,29 @@ export const calculateDuration = (startDate: string | null, endDate: string | nu
   
   return diffDays;
 };
+
+// Format date range for display
+export const formatDateRange = (fromDate: Date | null | undefined, toDate: Date | null | undefined) => {
+  if (!fromDate) return "-";
+  
+  if (!toDate) {
+    return formatDate(fromDate.toISOString());
+  }
+  
+  return `${formatDate(fromDate.toISOString())} - ${formatDate(toDate.toISOString())}`;
+};
+
+// Check if a date is within a range
+export const isDateInRange = (date: Date, fromDate: Date | null | undefined, toDate: Date | null | undefined) => {
+  if (!fromDate) return true;
+  
+  const timestamp = date.getTime();
+  const fromTimestamp = fromDate.getTime();
+  
+  if (!toDate) {
+    return timestamp >= fromTimestamp;
+  }
+  
+  const toTimestamp = toDate.getTime();
+  return timestamp >= fromTimestamp && timestamp <= toTimestamp;
+};

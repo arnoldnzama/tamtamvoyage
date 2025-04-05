@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +13,11 @@ import ReservationActionDialog from "@/components/admin/ReservationActionDialog"
 type Reservation = Database["public"]["Tables"]["reservations"]["Row"];
 type ReservationStatus = Database["public"]["Enums"]["reservation_status"];
 
+interface DateRange {
+  from: Date | undefined;
+  to: Date | undefined;
+}
+
 const Admin = () => {
   const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
@@ -26,6 +30,7 @@ const Admin = () => {
   const [adminMessage, setAdminMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ReservationStatus>("all");
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -89,6 +94,18 @@ const Admin = () => {
         query = query.eq('status', statusFilter);
       }
 
+      if (dateRange.from) {
+        const fromDate = new Date(dateRange.from);
+        fromDate.setHours(0, 0, 0, 0);
+        query = query.gte('created_at', fromDate.toISOString());
+      }
+      
+      if (dateRange.to) {
+        const toDate = new Date(dateRange.to);
+        toDate.setHours(23, 59, 59, 999);
+        query = query.lte('created_at', toDate.toISOString());
+      }
+
       query = query.order('created_at', { ascending: false });
       
       const { data, error } = await query;
@@ -109,6 +126,12 @@ const Admin = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (isAdmin) {
+      fetchReservations();
+    }
+  }, [statusFilter, dateRange.from, dateRange.to, isAdmin]);
 
   const handleDetails = (reservation: Reservation) => {
     setSelectedReservation(reservation);
@@ -161,6 +184,12 @@ const Admin = () => {
     }
   };
 
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setStatusFilter("all");
+    setDateRange({ from: undefined, to: undefined });
+  };
+
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-[#121212] flex items-center justify-center">
@@ -184,7 +213,10 @@ const Admin = () => {
             setSearchTerm={setSearchTerm}
             statusFilter={statusFilter}
             setStatusFilter={setStatusFilter}
+            dateRange={dateRange}
+            setDateRange={setDateRange}
             onRefresh={fetchReservations}
+            onClearFilters={handleClearFilters}
           />
 
           <ReservationTable 
