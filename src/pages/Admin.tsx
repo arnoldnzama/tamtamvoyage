@@ -1,38 +1,15 @@
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { Check, X, Search } from "lucide-react";
+import { Database } from "@/integrations/supabase/types";
 import CustomNavbar from "@/components/CustomNavbar";
 import Footer from "@/components/Footer";
-import { Database } from "@/integrations/supabase/types";
+import ReservationFilters from "@/components/admin/ReservationFilters";
+import ReservationTable from "@/components/admin/ReservationTable";
+import ReservationDetailsDialog from "@/components/admin/ReservationDetailsDialog";
+import ReservationActionDialog from "@/components/admin/ReservationActionDialog";
 
 type Reservation = Database["public"]["Tables"]["reservations"]["Row"];
 type ReservationStatus = Database["public"]["Enums"]["reservation_status"];
@@ -184,38 +161,6 @@ const Admin = () => {
     }
   };
 
-  const filteredReservations = reservations.filter(res => {
-    if (!searchTerm) return true;
-    
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      res.reference.toLowerCase().includes(searchLower) ||
-      res.commande.toLowerCase().includes(searchLower) ||
-      res.full_name.toLowerCase().includes(searchLower) ||
-      res.email.toLowerCase().includes(searchLower) ||
-      (res.car_name && res.car_name.toLowerCase().includes(searchLower))
-    );
-  });
-
-  const getStatusBadgeClass = (status: string) => {
-    switch (status) {
-      case 'en_attente':
-        return 'bg-yellow-500/20 text-yellow-500';
-      case 'confirmee':
-        return 'bg-green-500/20 text-green-500';
-      case 'refusee':
-        return 'bg-red-500/20 text-red-500';
-      default:
-        return 'bg-gray-500/20 text-gray-500';
-    }
-  };
-
-  const formatDate = (dateString: string | null) => {
-    if (!dateString) return "-";
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('fr-FR').format(date);
-  };
-
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-[#121212] flex items-center justify-center">
@@ -234,207 +179,39 @@ const Admin = () => {
         <div className="bg-[#1A1F2C]/90 rounded-lg p-6 mb-8">
           <h1 className="text-3xl font-playfair font-bold text-white mb-6">Administration des réservations</h1>
           
-          <div className="flex flex-col md:flex-row justify-between mb-6 gap-4">
-            <div className="relative w-full md:w-1/3">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-              <Input
-                className="w-full pl-10 bg-[#121212] border-gray-700 text-white"
-                placeholder="Rechercher par référence, nom..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            
-            <Select value={statusFilter} onValueChange={(value) => setStatusFilter(value as any)}>
-              <SelectTrigger className="w-full md:w-[180px] bg-[#121212] border-gray-700 text-white">
-                <SelectValue placeholder="Filtrer par statut" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#1A1F2C] border-gray-700">
-                <SelectItem value="all">Tous les statuts</SelectItem>
-                <SelectItem value="en_attente">En attente</SelectItem>
-                <SelectItem value="confirmee">Confirmée</SelectItem>
-                <SelectItem value="refusee">Refusée</SelectItem>
-              </SelectContent>
-            </Select>
-            
-            <Button onClick={fetchReservations} className="bg-blue-600 hover:bg-blue-700">
-              Actualiser
-            </Button>
-          </div>
+          <ReservationFilters 
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            statusFilter={statusFilter}
+            setStatusFilter={setStatusFilter}
+            onRefresh={fetchReservations}
+          />
 
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <div className="animate-spin h-10 w-10 border-4 border-t-blue-500 border-r-transparent border-b-blue-500 border-l-transparent rounded-full"></div>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <Table className="w-full">
-                <TableCaption>Liste des réservations ({filteredReservations.length})</TableCaption>
-                <TableHeader>
-                  <TableRow className="hover:bg-[#2A2F3C] border-gray-700">
-                    <TableHead className="text-white">Référence</TableHead>
-                    <TableHead className="text-white">Client</TableHead>
-                    <TableHead className="text-white">Véhicule</TableHead>
-                    <TableHead className="text-white">Date</TableHead>
-                    <TableHead className="text-white">Prix</TableHead>
-                    <TableHead className="text-white">Statut</TableHead>
-                    <TableHead className="text-white text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredReservations.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={7} className="text-center py-10 text-gray-400">
-                        Aucune réservation trouvée
-                      </TableCell>
-                    </TableRow>
-                  ) : (
-                    filteredReservations.map((reservation) => (
-                      <TableRow key={reservation.id} className="hover:bg-[#2A2F3C] border-gray-700">
-                        <TableCell className="font-medium text-gray-300">{reservation.reference}</TableCell>
-                        <TableCell className="text-gray-300">{reservation.full_name}</TableCell>
-                        <TableCell className="text-gray-300">{reservation.car_name || "Non spécifié"}</TableCell>
-                        <TableCell className="text-gray-300">{formatDate(reservation.created_at)}</TableCell>
-                        <TableCell className="text-gray-300">{reservation.price ? `${reservation.price}€` : "-"}</TableCell>
-                        <TableCell>
-                          <span className={`px-2 py-1 rounded-md text-xs font-medium ${getStatusBadgeClass(reservation.status)}`}>
-                            {reservation.status === 'en_attente' ? 'En attente' : 
-                             reservation.status === 'confirmee' ? 'Confirmée' : 'Refusée'}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              className="border-gray-700 text-gray-300 hover:text-white hover:bg-[#2A2F3C]"
-                              onClick={() => handleDetails(reservation)}
-                            >
-                              Détails
-                            </Button>
-                            
-                            {reservation.status === 'en_attente' && (
-                              <>
-                                <Button 
-                                  variant="outline"
-                                  size="sm"
-                                  className="border-green-700 text-green-500 hover:bg-green-900/20"
-                                  onClick={() => handleAction(reservation, 'confirm')}
-                                >
-                                  <Check className="w-4 h-4 mr-1" /> Confirmer
-                                </Button>
-                                
-                                <Button 
-                                  variant="outline"
-                                  size="sm"
-                                  className="border-red-700 text-red-500 hover:bg-red-900/20"
-                                  onClick={() => handleAction(reservation, 'reject')}
-                                >
-                                  <X className="w-4 h-4 mr-1" /> Refuser
-                                </Button>
-                              </>
-                            )}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          )}
+          <ReservationTable 
+            reservations={reservations}
+            loading={loading}
+            handleDetails={handleDetails}
+            handleAction={handleAction}
+            searchTerm={searchTerm}
+          />
         </div>
       </main>
 
-      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="bg-[#1A1F2C] text-white border-gray-700 max-w-3xl">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-playfair">Détails de la réservation</DialogTitle>
-            <DialogDescription className="text-gray-400">
-              Référence: {selectedReservation?.reference} | Commande: {selectedReservation?.commande}
-            </DialogDescription>
-          </DialogHeader>
+      <ReservationDetailsDialog 
+        isOpen={isDetailsOpen}
+        setIsOpen={setIsDetailsOpen}
+        reservation={selectedReservation}
+      />
 
-          {selectedReservation && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div className="space-y-2">
-                <h3 className="font-medium text-white">Informations client</h3>
-                <p><span className="text-gray-400">Nom:</span> {selectedReservation.full_name}</p>
-                <p><span className="text-gray-400">Email:</span> {selectedReservation.email}</p>
-                <p><span className="text-gray-400">Téléphone:</span> {selectedReservation.phone || '-'}</p>
-                <p><span className="text-gray-400">Pays:</span> {selectedReservation.country || '-'}</p>
-                <p><span className="text-gray-400">Ville:</span> {selectedReservation.city || '-'}</p>
-              </div>
-
-              <div className="space-y-2">
-                <h3 className="font-medium text-white">Informations réservation</h3>
-                <p><span className="text-gray-400">Véhicule:</span> {selectedReservation.car_name || '-'}</p>
-                <p><span className="text-gray-400">Date de début:</span> {formatDate(selectedReservation.start_date)} {selectedReservation.start_time || ''}</p>
-                <p><span className="text-gray-400">Date de fin:</span> {formatDate(selectedReservation.end_date)} {selectedReservation.end_time || ''}</p>
-                <p><span className="text-gray-400">Participants:</span> {selectedReservation.participants}</p>
-                <p><span className="text-gray-400">Prix:</span> {selectedReservation.price ? `${selectedReservation.price}€` : '-'}</p>
-              </div>
-
-              <div className="col-span-1 md:col-span-2 space-y-2">
-                <h3 className="font-medium text-white">Lieu de prise en charge</h3>
-                <p>{selectedReservation.pickup_location || '-'}</p>
-              </div>
-
-              <div className="col-span-1 md:col-span-2 space-y-2">
-                <h3 className="font-medium text-white">Message administrateur</h3>
-                <p>{selectedReservation.admin_message || '-'}</p>
-              </div>
-            </div>
-          )}
-
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDetailsOpen(false)}>
-              Fermer
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isActionModalOpen} onOpenChange={setIsActionModalOpen}>
-        <DialogContent className="bg-[#1A1F2C] text-white border-gray-700">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-playfair">
-              {actionType === 'confirm' ? 'Confirmer la réservation' : 'Refuser la réservation'}
-            </DialogTitle>
-            <DialogDescription className="text-gray-400">
-              {actionType === 'confirm' 
-                ? 'Confirmez cette réservation et envoyez une notification au client.' 
-                : 'Refusez cette réservation et informez le client.'}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-4 py-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1">
-                Message au client
-              </label>
-              <Textarea 
-                placeholder="Ajoutez un message personnalisé pour le client..."
-                className="bg-[#121212] border-gray-700 text-white min-h-[100px]"
-                value={adminMessage}
-                onChange={(e) => setAdminMessage(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <DialogFooter className="flex gap-2 justify-end">
-            <Button variant="outline" onClick={() => setIsActionModalOpen(false)}>
-              Annuler
-            </Button>
-            <Button 
-              onClick={submitAction}
-              className={actionType === 'confirm' ? 'bg-green-600 hover:bg-green-700' : 'bg-red-600 hover:bg-red-700'}
-            >
-              {actionType === 'confirm' ? 'Confirmer' : 'Refuser'} la réservation
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ReservationActionDialog 
+        isOpen={isActionModalOpen}
+        setIsOpen={setIsActionModalOpen}
+        reservation={selectedReservation}
+        actionType={actionType}
+        adminMessage={adminMessage}
+        setAdminMessage={setAdminMessage}
+        onSubmit={submitAction}
+      />
 
       <Footer />
     </div>
