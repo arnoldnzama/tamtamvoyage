@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,31 +32,10 @@ import { toast } from "@/hooks/use-toast";
 import { Check, X, Search } from "lucide-react";
 import CustomNavbar from "@/components/CustomNavbar";
 import Footer from "@/components/Footer";
+import { Database } from "@/integrations/supabase/types";
 
-type Reservation = {
-  id: string;
-  reference: string;
-  commande: string;
-  full_name: string;
-  email: string;
-  phone: string | null;
-  country: string | null;
-  city: string | null;
-  pickup_location: string | null;
-  start_date: string;
-  start_time: string | null;
-  end_date: string;
-  end_time: string | null;
-  car_id: string | null;
-  car_name: string | null;
-  participants: number;
-  driver_age: string | null;
-  price: number | null;
-  status: "en_attente" | "confirmee" | "refusee";
-  admin_message: string | null;
-  created_at: string;
-  updated_at: string;
-};
+type Reservation = Database["public"]["Tables"]["reservations"]["Row"];
+type ReservationStatus = Database["public"]["Enums"]["reservation_status"];
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -70,13 +48,11 @@ const Admin = () => {
   const [actionType, setActionType] = useState<"confirm" | "reject" | null>(null);
   const [adminMessage, setAdminMessage] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"all" | "en_attente" | "confirmee" | "refusee">("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | ReservationStatus>("all");
 
-  // Vérifier si l'utilisateur est admin
   useEffect(() => {
     const checkAdmin = async () => {
       try {
-        // Obtenir l'utilisateur actuel
         const { data: { user } } = await supabase.auth.getUser();
         
         if (!user) {
@@ -89,7 +65,6 @@ const Admin = () => {
           return;
         }
 
-        // Vérifier si l'utilisateur a un rôle admin
         const { data: roles, error } = await supabase
           .from('user_roles')
           .select('*')
@@ -133,12 +108,10 @@ const Admin = () => {
     try {
       let query = supabase.from('reservations').select('*');
 
-      // Appliquer le filtre par statut si ce n'est pas "all"
       if (statusFilter !== 'all') {
         query = query.eq('status', statusFilter);
       }
 
-      // Trier par date de création (les plus récentes d'abord)
       query = query.order('created_at', { ascending: false });
       
       const { data, error } = await query;
@@ -176,7 +149,6 @@ const Admin = () => {
     if (!selectedReservation || !actionType) return;
 
     try {
-      // Appel à l'edge function pour envoyer la notification par email
       const response = await fetch(`https://fvxhbjypaybgmqsfyfbb.supabase.co/functions/v1/send-notification`, {
         method: 'POST',
         headers: {
@@ -200,7 +172,6 @@ const Admin = () => {
         description: "Un email a été envoyé au client.",
       });
 
-      // Rafraîchir la liste des réservations
       fetchReservations();
       setIsActionModalOpen(false);
     } catch (error) {
@@ -213,7 +184,6 @@ const Admin = () => {
     }
   };
 
-  // Filtrer les réservations en fonction de la recherche
   const filteredReservations = reservations.filter(res => {
     if (!searchTerm) return true;
     
@@ -240,7 +210,7 @@ const Admin = () => {
     }
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
     if (!dateString) return "-";
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('fr-FR').format(date);
@@ -376,7 +346,6 @@ const Admin = () => {
         </div>
       </main>
 
-      {/* Modal de détails */}
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
         <DialogContent className="bg-[#1A1F2C] text-white border-gray-700 max-w-3xl">
           <DialogHeader>
@@ -426,7 +395,6 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Modal d'action (confirmer/refuser) */}
       <Dialog open={isActionModalOpen} onOpenChange={setIsActionModalOpen}>
         <DialogContent className="bg-[#1A1F2C] text-white border-gray-700">
           <DialogHeader>

@@ -33,6 +33,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { Database } from "@/integrations/supabase/types";
 
 type ReservationFormData = {
   country: string;
@@ -104,7 +105,7 @@ const Reservation = () => {
         driver_age: data.driverAge,
         price: price,
         user_id: (await supabase.auth.getUser()).data.user?.id || null,
-        status: "en_attente"
+        status: "en_attente" as Database["public"]["Enums"]["reservation_status"]
       };
       
       // Insérer la réservation dans la base de données
@@ -127,17 +128,19 @@ const Reservation = () => {
       console.log("Réservation soumise avec succès:", reservation);
       
       // Envoyer la notification par email
-      await fetch(`https://fvxhbjypaybgmqsfyfbb.supabase.co/functions/v1/send-notification`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
-        },
-        body: JSON.stringify({
-          type: 'new-reservation',
-          reservationId: reservation.id
-        })
-      });
+      if (reservation) {
+        await fetch(`https://fvxhbjypaybgmqsfyfbb.supabase.co/functions/v1/send-notification`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${(await supabase.auth.getSession()).data.session?.access_token}`
+          },
+          body: JSON.stringify({
+            type: 'new-reservation',
+            reservationId: reservation.id
+          })
+        });
+      }
       
       toast({
         title: "Réservation effectuée",
